@@ -61,3 +61,7 @@ native-snapshot.json
 .AppleDouble
 .Spotlight-V100
 .Trashes
+
+# Photos perso
+src/img/wallpapers/perso-*
+src/img/wallpapers/thumbs/perso-*

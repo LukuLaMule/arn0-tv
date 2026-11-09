@@ -1019,3 +1019,45 @@ html.preview, html.preview body {
     opacity: 0;
     transition: opacity 10000ms linear;
 }
+
+/* Fallback for TV engines without CSS Grid */
+@supports not (display: grid) {
+    .grid {
+        display: flex;
+        flex-wrap: wrap;
+        width: 1680px;
+    }
+    .grid > * {
+        flex: 0 0 300px;
+        width: 300px;
+        margin: 0 45px 34px 0;
+    }
+    .grid > *:nth-child(5n) {
+        margin-right: 0;
+    }
+
+    .thumbs {
+        display: flex;
+        flex-wrap: wrap;
+        width: 1676px;
+    }
+    .thumbs > * {
+        flex: 0 0 256px;
+        width: 256px;
+        margin: 0 28px 26px 0;
+    }
+    .thumbs > *:nth-child(6n) {
+        margin-right: 0;
+    }
+
+    .settings-list.two-col {
+        display: block;
+        column-count: 2;
+        column-gap: 40px;
+        width: 1680px;
+    }
+    .settings-list.two-col > * {
+        break-inside: avoid;
+        margin-bottom: 12px;
+    }
+}

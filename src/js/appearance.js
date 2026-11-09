@@ -61,3 +61,21 @@
         apply: apply
     };
 })();
+
+(function () {
+  function pad(s, n, c, end) {
+    s = String(s);
+    c = c === undefined ? ' ' : String(c);
+    if (!c || s.length >= n) return s;
+    var p = '';
+    while (p.length < n - s.length) p += c;
+    p = p.slice(0, n - s.length);
+    return end ? s + p : p + s;
+  }
+  if (!String.prototype.padStart) {
+    String.prototype.padStart = function (n, c) { return pad(this, n, c, false); };
+  }
+  if (!String.prototype.padEnd) {
+    String.prototype.padEnd = function (n, c) { return pad(this, n, c, true); };
+  }
+})();
