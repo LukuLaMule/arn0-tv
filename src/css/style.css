@@ -138,6 +138,140 @@ h1, h2 {
 .names-focused .app .label { visibility: hidden; }
 .names-focused .app.focused .label { visibility: visible; }
 
+/* Dashboard bar — full-width opaque band above the RSS ticker */
+.dashboard-strip {
+    position: absolute;
+    bottom: 48px;
+    left: 0;
+    right: 0;
+    height: 140px;
+    background: #0d1117;
+    display: -webkit-box;
+    display: flex;
+}
+
+/* Each card fills 1/4 of the bar with its own solid color accent on the left */
+.dash-card {
+    -webkit-box-flex: 1;
+    flex: 1;
+    padding: 0 36px;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    gap: 20px;
+    border-left: 1px solid rgba(255, 255, 255, 0.07);
+}
+.dash-card:first-child { border-left: none; }
+
+/* Colored top accent bar per widget */
+.dash-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+}
+
+.dash-card-pihole { border-top: 3px solid #7B8FE0; }
+.dash-card-weather { border-top: 3px solid #4FC3F7; }
+.dash-card-strava  { border-top: 3px solid #FC4C02; }
+.dash-card-umami   { border-top: 3px solid #66BB6A; }
+
+.dash-icon {
+    width: 36px;
+    height: 36px;
+    -webkit-box-flex: 0;
+    flex: none;
+}
+.dash-icon svg { width: 36px; height: 36px; }
+
+.dash-card-pihole .dash-icon { color: #7B8FE0; }
+.dash-card-weather .dash-icon { color: #4FC3F7; }
+.dash-card-strava  .dash-icon { color: #FC4C02; }
+.dash-card-umami   .dash-icon { color: #66BB6A; }
+
+.dash-body {
+    -webkit-box-flex: 1;
+    flex: 1;
+    min-width: 0;
+}
+
+.dash-label {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.35);
+    margin-bottom: 6px;
+}
+
+.dash-value {
+    font-size: 30px;
+    font-weight: 300;
+    color: #f4f5f7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dash-detail {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 4px;
+}
+
+.dash-sparkline {
+    width: 110px;
+    height: 40px;
+    -webkit-box-flex: 0;
+    flex: none;
+}
+.dash-sparkline svg {
+    width: 110px;
+    height: 40px;
+    overflow: visible;
+}
+
+/* RSS ticker — full width, bottom of screen */
+.rss-ticker {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.35);
+}
+
+.rss-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    height: 48px;
+    line-height: 48px;
+    font-size: 22px;
+    color: var(--muted);
+    will-change: transform;
+    -webkit-animation: rss-scroll 90s linear infinite;
+    animation: rss-scroll 90s linear infinite;
+}
+
+@-webkit-keyframes rss-scroll {
+    from { -webkit-transform: translateX(1920px); transform: translateX(1920px); }
+    to   { -webkit-transform: translateX(-100%);  transform: translateX(-100%); }
+}
+
+@keyframes rss-scroll {
+    from { -webkit-transform: translateX(1920px); transform: translateX(1920px); }
+    to   { -webkit-transform: translateX(-100%);  transform: translateX(-100%); }
+}
+
+
 .shelf {
     position: absolute;
     left: var(--edge);

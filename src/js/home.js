@@ -330,6 +330,103 @@
         $('date').textContent = Appearance.date(d);
     }
 
+    function sparklinePath(points, w, h) {
+        if (!points || !points.length) return '';
+        var max = 0;
+        for (var i = 0; i < points.length; i++) if (points[i] > max) max = points[i];
+        if (max === 0) return '';
+        var step = w / (points.length - 1);
+        var parts = [];
+        for (var j = 0; j < points.length; j++) {
+            var x = Math.round(j * step);
+            var y = Math.round(h - (points[j] / max) * h);
+            parts.push((j === 0 ? 'M' : 'L') + x + ',' + y);
+        }
+        return parts.join(' ');
+    }
+
+    function updateSparkline() {
+        var widget = $('dash-ph-sparkline');
+        if (!widget || !window.PiHole) return;
+        var d = PiHole.history();
+        if (!d || !d.length) { widget.innerHTML = ''; return; }
+        var path = sparklinePath(d, 110, 40);
+        if (!path) { widget.innerHTML = ''; return; }
+        widget.innerHTML = '<svg viewBox="0 0 110 40" preserveAspectRatio="none">' +
+            '<path d="' + path + '" fill="none" stroke="#7B8FE0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+            '</svg>';
+    }
+
+    function updateRss() {
+        var widget = $('rss-ticker');
+        if (!widget || !window.RSS) return;
+        var items = RSS.current();
+        if (!items || !items.length) { widget.classList.add('hidden'); return; }
+        var text = items.map(function (i) {
+            return '\u25CF\u00A0\u00A0' + '[' + i.source + ']\u00A0 ' + i.title + '\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0';
+        }).join('');
+        $('rss-track').textContent = text;
+        widget.classList.remove('hidden');
+    }
+
+    function updateHomeWeather() {
+        var widget = $('dash-weather');
+        if (!widget) return;
+        var d = window.Weather && Weather.current();
+        if (!d) { widget.classList.add('hidden'); return; }
+        $('dash-wx-icon').innerHTML = d.icon;
+        $('dash-wx-value').textContent = d.temp;
+        $('dash-wx-detail').textContent = d.detail;
+        widget.classList.remove('hidden');
+    }
+
+    function durStr(minutes) {
+        var h = Math.floor(minutes / 60);
+        var m = minutes % 60;
+        return h > 0 ? h + 'h' + (m > 0 ? (m < 10 ? '0' : '') + m : '') : m + ' min';
+    }
+
+    function updateStrava() {
+        var widget = $('dash-strava');
+        if (!widget) return;
+        var d = window.Strava && Strava.current();
+        if (!d) { widget.classList.add('hidden'); return; }
+        if (d.last) {
+            $('dash-strava-value').textContent =
+                d.last.distance + ' km  ·  ' + durStr(d.last.duration) +
+                '  ·  \u2191' + d.last.elevation + ' m';
+            $('dash-strava-detail').textContent = d.last.name;
+        }
+        if (d.week && !d.last) {
+            $('dash-strava-value').textContent =
+                d.week.distance + ' km cette semaine';
+            $('dash-strava-detail').textContent =
+                d.week.count + ' sortie' + (d.week.count > 1 ? 's' : '') +
+                '  ·  ' + d.week.duration + ' h';
+        }
+        widget.classList.remove('hidden');
+    }
+
+    function updateUmami() {
+        var widget = $('dash-umami');
+        if (!widget) return;
+        var d = window.Umami && Umami.current();
+        if (!d) { widget.classList.add('hidden'); return; }
+        $('dash-umami-value').textContent = d.visitors + ' visiteurs';
+        $('dash-umami-detail').textContent = d.pageviews + ' pages vues aujourd\'hui';
+        widget.classList.remove('hidden');
+    }
+
+    function updatePiHole() {
+        var widget = $('dash-pihole');
+        if (!widget) return;
+        var d = window.PiHole && PiHole.current();
+        if (!d) { widget.classList.add('hidden'); return; }
+        $('dash-ph-value').textContent = d.percent + '%  bloqué';
+        $('dash-ph-detail').textContent = d.blocked + ' / ' + d.total + '  ·  ' + d.gravity + ' domaines';
+        widget.classList.remove('hidden');
+    }
+
     // The TV takes ~4 s to list its ~450 apps, so Home is drawn from the last list we saw
     // and only redrawn if a fresh list differs.
     function readCache() {
@@ -458,6 +555,17 @@
         Appearance.apply();
         updateClock();
         setInterval(updateClock, 10000);
+        updateHomeWeather();
+        if (window.Weather) Weather.onUpdate(updateHomeWeather);
+        updatePiHole();
+        updateSparkline();
+        if (window.PiHole) PiHole.onUpdate(function () { updatePiHole(); updateSparkline(); });
+        updateRss();
+        if (window.RSS) RSS.onUpdate(updateRss);
+        updateStrava();
+        if (window.Strava) Strava.onUpdate(updateStrava);
+        updateUmami();
+        if (window.Umami) Umami.onUpdate(updateUmami);
         renderLab();
         var cached = readCache();
         if (cached && cached.length) setApps(cached);
@@ -472,6 +580,11 @@
             }
             updateClock();
             refreshInputStatus();
+            if (window.Weather) Weather.refresh();
+            if (window.PiHole) PiHole.refresh();
+            if (window.RSS) RSS.refresh();
+            if (window.Strava) Strava.refresh();
+            if (window.Umami) Umami.refresh();
             if (UI.isVisible('home')) Wallpaper.homeShown();
             if (Date.now() - state.lastFetch > REFRESH_AFTER_MS) setTimeout(loadApps, 1500);
         });

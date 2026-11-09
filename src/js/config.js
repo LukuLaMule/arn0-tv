@@ -81,6 +81,22 @@ window.LAUNCHER_CONFIG = {
         select: { freq: 1320, ms: 55, type: 'triangle' }
     },
 
+    /*
+     * Strava stats widget on the home screen. Set url to the Arn0 backend address
+     * (e.g. 'http://192.168.1.16:3000') in config.local.js. Leave null to hide the widget.
+     */
+    strava: {
+        url: null
+    },
+
+    /*
+     * Pi-hole stats widget on the home screen. Set url to your Pi-hole v6 address
+     * (e.g. 'http://192.168.1.16') in config.local.js. Leave null and the widget never appears.
+     */
+    pihole: {
+        url: null
+    },
+
     // Development only: where the Lab screen sends its logs (npm run devlog on your computer).
     // null disables it; set it to http://<your-computer-ip>:8099/log while debugging.
     devLogUrl: null

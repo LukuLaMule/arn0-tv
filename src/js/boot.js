@@ -16,6 +16,10 @@
     Settings.init();
     Screensaver.init();
     Weather.start();
+    PiHole.start();
+    Strava.start();
+    Umami.start();
+    RSS.start();
     Home.init();
 
     // Preview only: open a screen directly, e.g. http://localhost:8080/#settings

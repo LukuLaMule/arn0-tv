@@ -29,6 +29,59 @@
                 <h2>Consoles</h2>
                 <div class="row-viewport"><div id="inputs-row" class="row-track"></div></div>
             </div>
+
+            <!-- Dashboard strip: 4 stat cards above the RSS ticker -->
+            <div id="dashboard-strip" class="dashboard-strip">
+                <div id="dash-pihole" class="dash-card dash-card-pihole hidden">
+                    <div class="dash-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <div class="dash-body">
+                        <div class="dash-label">Pi-hole</div>
+                        <div id="dash-ph-value" class="dash-value"></div>
+                        <div id="dash-ph-detail" class="dash-detail"></div>
+                    </div>
+                    <div id="dash-ph-sparkline" class="dash-sparkline"></div>
+                </div>
+                <div id="dash-weather" class="dash-card dash-card-weather hidden">
+                    <div class="dash-icon" id="dash-wx-icon"></div>
+                    <div class="dash-body">
+                        <div class="dash-label">Météo · Pau</div>
+                        <div id="dash-wx-value" class="dash-value"></div>
+                        <div id="dash-wx-detail" class="dash-detail"></div>
+                    </div>
+                </div>
+                <div id="dash-strava" class="dash-card dash-card-strava hidden">
+                    <div class="dash-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                        </svg>
+                    </div>
+                    <div class="dash-body">
+                        <div class="dash-label">Strava</div>
+                        <div id="dash-strava-value" class="dash-value"></div>
+                        <div id="dash-strava-detail" class="dash-detail"></div>
+                    </div>
+                </div>
+                <div id="dash-umami" class="dash-card dash-card-umami hidden">
+                    <div class="dash-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                        </svg>
+                    </div>
+                    <div class="dash-body">
+                        <div class="dash-label">pycol.fr</div>
+                        <div id="dash-umami-value" class="dash-value"></div>
+                        <div id="dash-umami-detail" class="dash-detail"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="rss-ticker" class="rss-ticker hidden">
+                <div id="rss-track" class="rss-track"></div>
+            </div>
         </section>
 
         <section id="all" class="view page hidden">
@@ -172,6 +225,10 @@
     <script src="js/wallpaper.js"></script>
     <script src="js/appearance.js"></script>
     <script src="js/weather.js"></script>
+    <script src="js/pihole.js"></script>
+    <script src="js/strava.js"></script>
+    <script src="js/umami.js"></script>
+    <script src="js/rss.js"></script>
     <script src="js/sound.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/render-probe.js"></script>
